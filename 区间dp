@@ -7,23 +7,23 @@
 石子归并满足状态方程：dp[i][j]=min(dp[i][j],dp[i][k]+dp[k+1][j]+sum[i][j]); sum[i][j]指i-j的和
 可以通过前缀和获得，sum[j]-s[i-1],或者sum[i][j]=sum[i][k]+sum[k][j];
 
-for (int i = 1; i <= 2*n; i++)
+	 for (int i = 1; i <= 2*n; i++)
 		for (int j = 1; j <= 2*n; j++) {
-				dp2[i][j] = 0;
-				dp[i][j] = 0x3f3f3f3f;
+			dp2[i][j] = 0;
+			dp[i][j] = 0x3f3f3f3f;
 	  }
-for (int i = 1; i <= 2 * n; i++) {
-			dp[i][i] = 0;
-			sum[i] = sum[i - 1] + a[i];
-}
+	 for (int i = 1; i <= 2 * n; i++) {
+		dp[i][i] = 0;
+		sum[i] = sum[i - 1] + a[i];
+	 }
 	
-for (int len = 1; len < n; len++) {
+	for (int len = 1; len < n; len++) {
 		for (int i = 1; i + len <= 2*n; i++) {
-				int j = i + len;
-			  for (int k = i; k < j; k++) {
-				   dp[i][j] = min(dp[i][j], dp[i][k] + dp[k + 1][j] + sum[j]-sum[i-1]); //求最小值
-					 dp2[i][j] = max(dp2[i][j], dp2[i][k] + dp2[k + 1][j] + sum[j] - sum[i - 1]); //求最大值
-				}
+			int j = i + len;
+		        for (int k = i; k < j; k++) {
+				 dp[i][j] = min(dp[i][j], dp[i][k] + dp[k + 1][j] + sum[j]-sum[i-1]); //求最小值
+				 dp2[i][j] = max(dp2[i][j], dp2[i][k] + dp2[k + 1][j] + sum[j] - sum[i - 1]); //求最大值
+			}
 		}
-}
+	}
 
