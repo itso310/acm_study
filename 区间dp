@@ -1,3 +1,29 @@
-1、石子归并问题
+区间dp，顾名思义，就是去解决一些区间内最优值的问题，通常的时间复杂度为n^2,n^3.
+它既要满足dp问题的最优子结构和无后效性外，还应该符合在区间上操作的特点。
+它必定是由多个长度不一的小区间转移而来，我们通过求得多个小区间的情况，从而合并信息，得到大区间。
+一般而言dp[1][n]就是结果。
 
-石子归并
+1、石子归并问题
+石子归并满足状态方程：dp[i][j]=min(dp[i][j],dp[i][k]+dp[k+1][j]+sum[i][j]); sum[i][j]指i-j的和
+可以通过前缀和获得，sum[j]-s[i-1],或者sum[i][j]=sum[i][k]+sum[k][j];
+
+for (int i = 1; i <= 2*n; i++)
+		for (int j = 1; j <= 2*n; j++) {
+				dp2[i][j] = 0;
+				dp[i][j] = 0x3f3f3f3f;
+	  }
+for (int i = 1; i <= 2 * n; i++) {
+			dp[i][i] = 0;
+			sum[i] = sum[i - 1] + a[i];
+}
+	
+for (int len = 1; len < n; len++) {
+		for (int i = 1; i + len <= 2*n; i++) {
+				int j = i + len;
+			  for (int k = i; k < j; k++) {
+				   dp[i][j] = min(dp[i][j], dp[i][k] + dp[k + 1][j] + sum[j]-sum[i-1]); //求最小值
+					 dp2[i][j] = max(dp2[i][j], dp2[i][k] + dp2[k + 1][j] + sum[j] - sum[i - 1]); //求最大值
+				}
+		}
+}
+
