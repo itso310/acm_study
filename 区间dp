@@ -44,6 +44,27 @@ https://blog.csdn.net/noiau/article/details/72514812
 http://www.cnblogs.com/jiu0821/p/4493497.html
 
 
+3、括弧匹配（poj2955）
+题意：给一段()[]组成的序列问，在保持次序列下，最大的括弧匹配数是多少。
+
+反思:最初一直在想着如何实现状态转移方程 dp[i][k]+dp[k+1][j]+cnt,想要处理内部连接时的状态转移方程，
+换个思路想，从外围入手,dp[i][j]=dp[i+1][j-1]+cnt,这也是一个状态转移方程，它能直接忽视内部变化情况，直接从
+外围的情况去考虑，然后确定一个dp[i][j]后，我们可以通过dp[i][j] = max(dp[i][j],dp[i][k]+dp[k+1][j])的
+状态转换方程确定最终结果。
+
+核心代码：
+for (int length = 2; length <= len; length++) {
+	for (int i = 0; i + length - 1 < len; i++) {
+		int j = i + length - 1;
+		if((s[i]=='('&&s[j]==')')||(s[i]=='['&&s[j]==']'))
+			dp[i][j] = dp[i + 1][j - 1] + 2;
+		else
+			dp[i][j] = dp[i + 1][j - 1];
+		for (int k = i; k < j; k++) {
+			dp[i][j] = max(dp[i][j], dp[i][k] + dp[k + 1][j]);
+		}
+	}
+}
 
 
 
