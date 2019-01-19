@@ -30,13 +30,13 @@ printf("%.2lf\n", dp[0]);
 
 核心代码：
 for (int i = r; i >= 1; i--) {
-		for (int j = c; j >= 1; j--) {
-			if (i == r && j == c)
-				continue;
-			if (p[i][j].p1 == 1)
-				continue;
-			dp[i][j] = (p[i][j].p2*dp[i][j + 1] + 2 + p[i][j].p3*dp[i + 1][j]) / (1 - p[i][j].p1);
-		}
+    for (int j = c; j >= 1; j--) {
+	if (i == r && j == c)
+		continue;
+	if (p[i][j].p1 == 1)
+		continue;
+	dp[i][j] = (p[i][j].p2*dp[i][j + 1] + 2 + p[i][j].p3*dp[i + 1][j]) / (1 - p[i][j].p1);
+    }
  }
    
  反思：
