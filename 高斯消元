@@ -1,6 +1,6 @@
 1、浮点类型高斯消元进行求解
 
-模板：
+模板：(洛谷P3389)
 const double Exp = 1e-7;
 const int N = 105;
 double Matrix[N][N];
