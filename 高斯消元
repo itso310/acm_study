@@ -1,0 +1,60 @@
+1、浮点类型高斯消元进行求解
+
+模板：
+const double Exp = 1e-7;
+const int N = 105;
+double Matrix[N][N];
+int n;
+double x[N];
+
+bool Gauss(int row, int col) {
+	int i = 1, j = 1;
+	for (; i <= row && j <= col; i++, j++) {
+		int Max_r = i;
+		//将一列中最大的值交换到头
+		for (int ii = i + 1; ii <= row; ii++) {
+			if (fabs(Matrix[ii][j]) > fabs(Matrix[Max_r][j]))
+				Max_r = ii;
+		}
+		//如果最大值为0，那么下面的都为0
+		if (fabs(Matrix[Max_r][j]) <= Exp) {
+			i--;
+			continue;
+		}
+		//当最大值不在i位置时需要进行交换
+		if (Max_r != i) {
+			for (int jj = 1; jj <= col; jj++)
+				swap(Matrix[i][jj], Matrix[Max_r][jj]);
+		}
+		//进行消元
+		for (int ii = i + 1; ii <= row; ii++) {
+			if (fabs(Matrix[i][col]) > Exp) {
+				double tmp = Matrix[ii][j] / Matrix[i][j];
+				for (int jj = j; jj <= col; jj++) {
+					Matrix[ii][jj] -= tmp * Matrix[i][jj];
+				}
+				Matrix[ii][j] = 0;
+			}
+		}
+	}
+
+	//判断是否无解
+	for (int ii = i; ii <= row; ii++) {
+		if (fabs(Matrix[ii][col]) >= Exp)
+			return 0;
+	}
+	i--;
+	//判断是否是无穷解，修改后可为自由元
+	if (i < n)
+		return 0;
+	//求解
+	memset(x, 0, sizeof x);
+	for (int ii = i; ii >= 1; ii--) {
+		x[ii] = Matrix[ii][col];
+		for (int jj = ii + 1; jj <= n; jj++) {
+			x[ii] -= x[jj] * Matrix[ii][jj];
+		}
+		x[ii] /= Matrix[ii][ii];
+	}
+	return 1;
+}
