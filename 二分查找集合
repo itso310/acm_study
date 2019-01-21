@@ -31,7 +31,7 @@ int findLastEqual(int[] array, int key) {
 }
 
 // 查找最后一个等于或者小于key的元素
-static int findLastEqualSmaller(int[] array, int key) {
+int findLastEqualSmaller(int[] array, int key) {
     int left = 0;
     int right = array.length - 1;
     while (left <= right) {
@@ -59,7 +59,7 @@ int findLastSmaller(int[] array, int key) {
 }
 
 // 查找第一个等于或者大于key的元素
-static int findFirstEqualLarger(int[] array, int key) {
+int findFirstEqualLarger(int[] array, int key) {
     int left = 0;
     int right = array.length - 1;
     while (left <= right) {
@@ -73,7 +73,7 @@ static int findFirstEqualLarger(int[] array, int key) {
 }
 
 // 查找第一个大于key的元素
-static int findFirstLarger(int[] array, int key) {
+int findFirstLarger(int[] array, int key) {
     int left = 0;
     int right = array.length - 1;
     while (left <= right) {
