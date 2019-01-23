@@ -66,6 +66,18 @@ for (int length = 2; length <= len; length++) {
 	}
 }
 
+4、String painter（hdu 2476）
+题意：有两个相等的字符串，长度小于等100，求A转化成B的最小次数。
+
+思路：
+    此题经过许久研究发现直接由A->B实现不了，因此我们可以寻找中间替代物来解决问题。设res[i]表示字符串从[0,i]转化的最
+少次数，显然满足下列关系：
+1、s[i]==s2[i]时,res[i]=res[i-1],因为不需要进行转化。
+2、s[i]!=s2[i]时,满足res[i]=min(res[i],res[x-1]+dp[x][i]),dp[i][j]表示在[i,j]区间内，由空子串转化为s2[i,j]的
+字串所需要的最少操作数。
+    此时关键如何求dp[i][j],刚开始要初始化dp[i][j]，我们显然(dp[i][j])max=dp[i][j-1]+1。由此来初始化，之后研究
+发现在[i,j]区间内，设k点,在k点时有s2[k]==s2[j],显然dp[k][j]==dp[k][j-1]
+
 
 相关资料：
 https://blog.csdn.net/woshi250hua/article/details/7969225
