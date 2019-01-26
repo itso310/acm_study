@@ -31,3 +31,31 @@ for(int i=1;i<cnt;i++){
 反思：
   异或和常针对于01二进制进行处理，此题是一个非常好的综合题，与背包问题结合起来。数据所给范围3000以内，即最高为只有12，也就是
 最大值为4096,因此可以dp存储原状态去推导现状态，最后得到答案。dp题还是需要多思考多练！
+
+2、小a的排序
+题意：
+    小a有一个长度为n的排列。定义一段区间是"萌"的，当且仅当把区间中各个数排序后相邻元素的差为1
+现在他想知道包含数x,y的长度最小的"萌"区间的左右端点也就是说，我们需要找到长度最小的区间[l,r]，
+满足区间[l,r]是"萌"的，且同时包含数x和数y如果有多个合法的区间，输出左端点最靠左的方案。
+
+思路：
+    本题我以为会有数字重复出现的情况，因此考虑许久，最后还是T了。每个数字出现一次，只需不断更新对应区间即可。
+初始时：l=min(pos[x],pos[y]),r=max(pos[x],pos[y]);  在[l,r]中确定max_val,min_val,在pos[min_val,max_val]
+中更新[l,r]区间,不断重复，直到r-l==max_val-min_val时，就是结果。第一次找到的就是结果。
+
+核心代码：
+int l=min(pos[x],pos[y]),r=max(pos[x],pos[y]);
+int maxv=0x3f3f3f3f,minv=-0x3f3f3f3f;
+while(r-l!=maxv-minv){
+		maxv=-0x3f3f3f3f;
+		minv=0x3f3f3f3f;
+		for(int i=l;i<=r;i++){
+			maxv=max(maxv,a[i]);
+			minv=min(minv,a[i]);
+		}
+		for(int i=minv;i<=maxv;i++){
+			l=min(l,pos[i]);
+			r=max(r,pos[i]);
+		}
+}
+printf("%d %d\n",l,r);
