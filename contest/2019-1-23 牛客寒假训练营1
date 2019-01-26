@@ -47,15 +47,15 @@ for(int i=1;i<cnt;i++){
 int l=min(pos[x],pos[y]),r=max(pos[x],pos[y]);
 int maxv=0x3f3f3f3f,minv=-0x3f3f3f3f;
 while(r-l!=maxv-minv){
-		maxv=-0x3f3f3f3f;
-		minv=0x3f3f3f3f;
-		for(int i=l;i<=r;i++){
-			maxv=max(maxv,a[i]);
-			minv=min(minv,a[i]);
-		}
-		for(int i=minv;i<=maxv;i++){
-			l=min(l,pos[i]);
-			r=max(r,pos[i]);
-		}
+     maxv=-0x3f3f3f3f;
+     minv=0x3f3f3f3f;
+     for(int i=l;i<=r;i++){
+	 maxv=max(maxv,a[i]);
+	 minv=min(minv,a[i]);
+     }
+     for(int i=minv;i<=maxv;i++){
+	 l=min(l,pos[i]);
+	 r=max(r,pos[i]);
+     }
 }
 printf("%d %d\n",l,r);
