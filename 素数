@@ -1,0 +1,28 @@
+1、判断一个数是否为素数
+bool isPrime(int num)
+{
+	if (num == 2 || num == 3)
+		return true;
+	if (num % 6 != 1 && num % 6 != 5)
+		return false;
+	for (int i = 5; i*i <= num; i += 6)
+		if (num % i == 0 || num % (i+2) == 0)
+			return false;
+	return true;
+}
+
+2、素数筛
+int prime[N],Mark[N];
+int cnt=0;
+
+void Prime(){
+	for(int i=2;i<N-10;i++){
+		if(Mark[i]==0)
+			prime[cnt++]=i;
+		for(int j=0;j<cnt&&prime[j]*i<N-10;j++){
+			Mark[i*prime[j]]=1;
+			if(i%prime[j]==0)
+				break;
+		}
+	}
+}
