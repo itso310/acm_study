@@ -1,0 +1,31 @@
+1、Kruskal
+
+int Find(int x){
+	int r=x;
+	while(pre[r]!=r)
+		r=pre[r];
+	int i=x,j;
+	while(i!=r){
+		j=pre[i];pre[i]=r;i=j;
+	}
+	return r;
+}
+
+void Kruskal(){
+	sort(edge+1,edge+tot,cmp); //边从小到大排序 
+	for(int i=1;i<=k;i++) 
+		pre[i]=i;
+	for(int i=1;i<tot;i++){
+		int q = Find(edge[i].from);
+		int p = Find(edge[i].to);
+		if(q!=p){
+			pre[q]=p;
+			res+=edge[i].val;
+			cnt++;
+		}
+	}
+}
+
+克鲁斯卡尔算法主要是针对边展开，边数少时效率会非常高，所以对稀疏图有很大的优势。
+时间复杂度主要是O(eloge)
+
