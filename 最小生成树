@@ -29,3 +29,34 @@ void Kruskal(){
 克鲁斯卡尔算法主要是针对边展开，边数少时效率会非常高，所以对稀疏图有很大的优势。
 时间复杂度主要是O(eloge)
 
+2、prime算法堆优化
+typedef struct point{
+     int to;
+     ll val;
+     friend bool operator <(point a,point b){
+	return a.val>b.val;
+     }
+}point;
+
+res=0;cnt=1;vis[1]=1;
+priority_queue<point>q;
+for(int i=head[1];i;i=edge[i].pre){
+    point p;
+    p.to=edge[i].to; p.val=edge[i].val;
+    q.push(p);
+}
+while(!q.empty()){
+      point tmp=q.top();
+      q.pop();
+      if(vis[tmp.to]) continue;
+      res+=tmp.val;cnt++;vis[tmp.to]=1;
+      for(int i=head[tmp.to];i;i=edge[i].pre){
+	  int to = edge[i].to;
+	  if(vis[to])  continue;
+	  point p;
+	  p.to=to;p.val=edge[i].val;
+	  q.push(p);
+      }
+}
+
+prime算法对于稠密图，即边数非常多的情况会更好一些。
