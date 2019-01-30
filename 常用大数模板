@@ -1,0 +1,77 @@
+1、快速幂模板
+ll quick(ll a, ll b,ll mod) {
+    ll res = 1;
+    while (b) {
+        if (b & 1) res = res * a%mod;
+        b >>= 1;
+        a = a * a%mod;
+    }
+    return res;
+}
+
+2、求phi模板
+ll phi(ll m) {
+    ll ans = 1;
+    for (ll i = 2; i*i <= m; i++) {
+        if (m%i == 0) {
+            m /= i;
+            ans *= i - 1;
+            while (m%i == 0) {
+                m /= i;
+                ans *= i;
+            }
+        }
+    }
+    if (m > 1) ans *= m - 1;
+    return ans;
+}
+
+3、大数取模模板
+ll Mod(string a,ll b)
+{
+    ll len=a.length()-1;
+    ll ans=0;
+    for(int i=0;i<=len;i++)
+        ans=(ans*10+(a[i]-'0')%b)%b;
+    return ans;
+}
+
+4、大数相乘模板
+string Mul(string s,int x){
+    reverse(s.begin(),s.end());
+    int cmp=0;
+    for(int i=0;i<s.size();i++){
+        cmp=(s[i]-'0')*x+cmp;
+        s[i]=(cmp%10+'0');
+        cmp/=10;
+    }
+    while(cmp){
+        s+=(cmp%10+'0');
+        cmp/=10;
+    }
+    reverse(s.begin(),s.end());
+    return s;
+}
+
+5、大数相加模板：
+string sum(string s1,string s2)
+{
+    if(s1.length()<s2.length())
+    {
+        string temp=s1;
+        s1=s2;
+        s2=temp;
+    }
+    int i,j;
+    for(i=s1.length()-1,j=s2.length()-1;i>=0;i--,j--)
+    {
+        s1[i]=char(s1[i]+(j>=0?s2[j]-'0':0));   //注意细节
+        if(s1[i]-'0'>=10)
+        {
+            s1[i]=char((s1[i]-'0')%10+'0');
+            if(i) s1[i-1]++;
+            else s1='1'+s1;
+        }
+    }
+    return s1;
+}
