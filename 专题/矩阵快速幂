@@ -14,16 +14,15 @@ Sk=(1+A^(n/2+1))*S((n-1)/2)+A^(n/2+1)类似的递推公式，这种方法可以�
 
 核心代码：
 Matrix getsum(int k){
-	Matrix tmp = A;
     if(k==1)
-        return tmp;
+        return A;
     Matrix t=getsum(k/2);
     if(k&1){
-        Matrix cur = quick(tmp,k/2+1);
+        Matrix cur = quick(A,k/2+1);
         t = add(t,Mul(cur,t));
         t = add(cur,t);
     }else{
-        Matrix cur = quick(tmp,k/2);
+        Matrix cur = quick(A,k/2);
         t = add(t,Mul(cur,t));
     }
     return t;
