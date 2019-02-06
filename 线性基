@@ -1,6 +1,28 @@
+模板：
+ll base[N];
+void Linear_Basis(){
+    for(int i=1;i<=n;i++){
+        for(int j=62;j>=0;j--){
+            if((a[i]>>j)&1){
+                if(!base[j]){
+                    base[j]=a[i];
+                    break;
+                }else{
+                    a[i]^=base[j];
+                }
+            }
+        }
+    }
+}
+
+1、xor序列(例题：https://ac.nowcoder.com/acm/contest/180/D)
+题意：
+   有个数组a[n],问给出x，y。是否可以使用a[n]中的数将x->y
+
+
 参考文章：
 https://blog.sengxian.com/algorithms/linear-basis
 https://blog.csdn.net/u013534123/article/details/79875825
 https://www.cnblogs.com/vb4896/p/6149022.html
 https://www.cnblogs.com/ljh2000-jump/p/5869991.html
-https://ac.nowcoder.com/acm/contest/180/D
+
