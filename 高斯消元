@@ -51,7 +51,7 @@ bool Gauss(int row, int col) {
 	memset(x, 0, sizeof x);
 	for (int ii = i; ii >= 1; ii--) {
 		x[ii] = Matrix[ii][col];
-		for (int jj = ii + 1; jj <= n; jj++) {
+		for (int jj = ii + 1; jj <= row; jj++) {
 			x[ii] -= x[jj] * Matrix[ii][jj];
 		}
 		x[ii] /= Matrix[ii][ii];
@@ -65,7 +65,7 @@ const double EPS = 1e-9;
 inline int sign(double x){return (x>EPS)-(x<-EPS);}
 double A[250][250];
 
-int gauss(int n){
+bool gauss(int n){
     int i,j,k,r;
     for(i=0;i<n;i++){
         //选一行与r与第i行交换，提高数据值的稳定性
