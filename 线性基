@@ -1,14 +1,23 @@
 模板：
 ll base[N];
 void Linear_Basis(){
+    memset(base,0, sizeof(base));
     for(int i=1;i<=n;i++){
-        for(int j=62;j>=0;j--){
-            if((a[i]>>j)&1){
-                if(!base[j]){
-                    base[j]=a[i];
+        for(int j=62;j>=0;j--) {
+            if ((a[i] >> j) & 1) {
+                if (!base[j]) {
+                    base[j] = a[i];
+                    for (int k = j - 1; k >= 0; k--) {
+                        if (((base[j] >> k) & 1) && base[k])
+                            base[j] ^= base[k];
+                    }
+                    for (int k = j + 1; k <= 62; k++) {
+                        if ((base[k] >> j) & 1)
+                            base[k] ^= base[j];
+                    }
                     break;
-                }else{
-                    a[i]^=base[j];
+                } else {
+                    a[i] ^= base[j];
                 }
             }
         }
@@ -18,7 +27,16 @@ void Linear_Basis(){
 1、xor序列(例题：https://ac.nowcoder.com/acm/contest/180/D)
 题意：
    有个数组a[n],问给出x，y。是否可以使用a[n]中的数将x->y
+   
+思路：
+    建立线性基，xy逐位判断，是否可以从x->y即可
+    
+2、XOR(hdu3949)
+题意:
+    有个数组a[n]，问有数组中的数异或出来的第k小的值是多少。
 
+思路：
+    建立线性基，然后按照k的个数进行操作，注意判断0的存在即可。
 
 参考文章：
 https://blog.sengxian.com/algorithms/linear-basis
