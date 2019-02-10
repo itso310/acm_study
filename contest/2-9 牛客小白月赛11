@@ -1,0 +1,9 @@
+1、Rinne loves Xor
+题意：
+    给了一组a[N],b[N],通过式子c[i]=c[i-1]+a[i]^b[i]+sigma(j=1,j=i-1)(a[i]^b[j]+a[j]^b[i]),c[0]=0;求c从[1,n]%(1e9+7)
+的所有值。
+
+思路：
+   经过推理前几个式子发现,c[n]=sigma(i=1,i=n)sigma(j=1,j=n)(a[i]^b[j])。此时我们可以寻求树状数组求解，可以用树状数组分别
+记录每个数字2进制位置的1数量，然后res = (res+(1ll<<(j-1))%mod*((cnta*(i-cntb)%mod+cntb*(i-cnta)%mod)%mod))%mod;即可
+求得答案。 
