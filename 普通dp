@@ -1,0 +1,35 @@
+1.Photo Processing(cf 883I)
+题意：
+    给你n个数，将其进行分组，每组最少k个数，求分组方案中最小的最大值差值，其中差值为一组中max(max-min)的值
+
+思路：
+    先将答案进行二分，然后使用dp去处理，设dp[i]表示[1,i]中能否被完整分成满足条件的几段
+    
+代码：
+方法一：通过二分的答案和k值去约束答案，如果dp[i]可行，那么标记dp[i]=1
+bool check(int differ){
+    memset(dp,0, sizeof(bool)*(n+2));
+    int index=1;dp[0]=1;
+    for(int i=1;i<=n;i++){
+        while(a[i]-a[index]>differ)
+            index++;
+		    while(i-index+1>=k){
+            if(dp[index-1]){
+                dp[i]=1;break;
+            }
+			      index++;
+        }
+    }
+    return dp[n];
+}
+方法二：last去标记最后一个能似的dp[i]成功的位置，如果dp[n]==n那么说明都可以分段
+bool check(int differ){
+    int last=0;
+    for(int i=k;i<=n;i++){
+        int j = dp[i-k];
+        if(a[i]-a[j+1]<=differ)
+            last=i;
+        dp[i]=last;
+    }
+	return dp[n]==n;
+}
