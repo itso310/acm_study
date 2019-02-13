@@ -17,7 +17,7 @@ bool check(int differ){
             if(dp[index-1]){
                 dp[i]=1;break;
             }
-			      index++;
+	    index++;
         }
     }
     return dp[n];
@@ -31,5 +31,5 @@ bool check(int differ){
             last=i;
         dp[i]=last;
     }
-	return dp[n]==n;
+    return dp[n]==n;
 }
