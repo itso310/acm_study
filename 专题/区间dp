@@ -74,9 +74,23 @@ for (int length = 2; length <= len; length++) {
 少次数，显然满足下列关系：
 1、s[i]==s2[i]时,res[i]=res[i-1],因为不需要进行转化。
 2、s[i]!=s2[i]时,满足res[i]=min(res[i],res[x-1]+dp[x][i]),dp[i][j]表示在[i,j]区间内，由空子串转化为s2[i,j]的
-字串所需要的最少操作数。
+字串所需要的最少操作数。因为存在s[i]!=s2[i]，则必存在转化次数使得等价于空子串转化为s2[i][j]。
     此时关键如何求dp[i][j],刚开始要初始化dp[i][j]，我们显然(dp[i][j])max=dp[i][j-1]+1。由此来初始化，之后研究
-发现在[i,j]区间内，设k点,在k点时有s2[k]==s2[j],显然dp[k][j]==dp[k][j-1]
+发现在[i,j]区间内，设k点,在k点时有s2[k]==s2[j],显然dp[k][j]==dp[k][j-1]，因此满足状态转移方程：dp[i][j]=min(
+dp[i][j],dp[i][k-1]+dp[k][j-1]),因为只有末尾s2[j]与串中有相等的时候，才能优化次数。
+
+核心代码：
+for(int len=2;len<=length;len++){
+    for(int i=1;i+len-1<=length;i++){
+        int j = i+len-1;
+        dp[i][j]=dp[i][j-1]+1;
+        for(int k=i;k<j;k++){
+            if(s2[k]==s2[j])
+               dp[i][j]=min(dp[i][j],dp[i][k-1]+dp[k][j-1]);
+        }
+    }
+ }
+ 
 
 
 相关资料：
