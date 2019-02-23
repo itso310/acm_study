@@ -79,7 +79,7 @@ for(int i=1;i<=k;i++){
         dp[j]=max(dp[j-1],w[t^1][j-1])+a[j];
         w[t][j]=max(dp[j],w[t][j-1]);
     }
-        t^=1;
+    t^=1;
 }
 printf("%lld\n",w[t^1][n]);
 
