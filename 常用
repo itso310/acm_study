@@ -3,3 +3,11 @@ friend bool operator< (node a,node b){
 		return a.step>b.step;
 }
 优先队列将步数较小的放在前面
+
+2、
+do {
+    if (check()) {
+	......
+    }
+} while (next_permutation(a + 1, a + 1 + n));
+全排列函数，注意最初需要将a从小到大进行排序。
