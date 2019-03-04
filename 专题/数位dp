@@ -1,0 +1,78 @@
+1、不要62(hdu2089)
+题意：
+  求出区间[n,m]中数位没有62和4的个数
+思路：
+  1、设dp[i][j]表示最高i位时,第i为j符合条件的个数。例如dp[5][0]中包含00532。数位dp的精髓就是逐位比较，最终获得答案。
+设count(n)记录[0,n)的个数，因此要获得[n,m]中的个数，需要count(m+1)-count(n)。其中dp[i][j]的状态转移方程为：
+1)、dp[i][j]=0 (j==4) 2)、dp[i][j]=sigma(dp[i-1][j]) (j=0,1...,9),当j=6时,需要减去dp[i-1][2]
+之后就是将数位拆开，挨个去比较比如102,拆出来为201,此时先去保存100以下的数字，之后去保存102以下，100以上的数字。
+最终即可获得答案。
+
+代码：
+1、
+void init(){
+     dp[0][0]=1;
+     for(int i=1;i<10;i++){
+	for(int j=0;j<10;j++){
+		if(j==4){
+			dp[i][j]=0;
+		}else if(j!=6){
+			for(int k=0;k<=9;k++)
+				dp[i][j]+=dp[i-1][k];
+		}else if(j==6){
+			for(int k=0;k<=9;k++)
+				dp[i][j]+=dp[i-1][k];
+			dp[i][j]-=dp[i-1][2];
+		}
+	  }
+      }
+}
+int v[N+10];
+ll solve(int di){
+   ll res=0;
+   v[0]=0;
+   while(di){
+	v[++v[0]]=di%10;
+	di/=10;
+   }
+   v[v[0]+1]=0;
+   for(int i=v[0];i>=1;i--){
+	for(int j=0;j<v[i];j++){
+		if(j!=4&&!(j==2&&v[i+1]==6))
+			res+=dp[i][j];
+	}
+	if(v[i]==4)
+		break;
+	if(v[i]==2&&v[i+1]==6)
+		break;
+    }
+    return res;
+}
+
+2、Beautiful numbers(https://codeforces.com/problemset/problem/55/D)
+题意:
+    一个正整数，如果它能被数位上每个非零数整除，那么这个数为完美数，求区间[n,m]的完美数个数。
+    
+思路：
+    1、如果一个数能被它所有非0数位整除那么这个数一定被lcm{[1,9]}整除。
+    2、存在定理a%(x*n)%x=a%x
+    3、[1,9]所有的组合的最小公倍数，最大值为2520，共有48个，2520%lcm[任意组合]=0。
+    综上关系，我们可以发现我们需要找到所有满足a%(x*n)%x=a%x=0的结果，显然本题中x*n取值为2520，因此我们可
+以将数进行拆分，然后逐层搜索，dp记录数据，设dp[20][50][2525],dp[i][j][k]表示在数位i时，经过离散化过的最小
+公倍数hash[lcm]=pos，k表示模后取值，因为lcm最大为2520，因此值只需取到2520即可。
+
+核心代码：
+ll dfs(int pos, int tot, int lcm, bool limit) { 
+   if (pos == 0) //pos表示当前位数,tot表示取模后值,lcm表示当前最小lcm，limit表示是否可以任意取值
+	return (tot%lcm == 0);
+   if (!limit&&dp[pos][ha[lcm]][tot] != -1)
+	return dp[pos][ha[lcm]][tot];
+   ll res = 0;
+        int top = limit ? di[pos] : 9; //判断当前有限制
+   for (int i = 0; i <= top; i++) {
+	res += dfs(pos - 1, (tot * 10 + i) % mod, i ? i * lcm / gcd(i, lcm) : lcm, i == di[pos] && limit);
+   } //进一步搜索
+   if (!limit) //如果没有限制,那么这个情况的值就确定下来了
+ 	dp[pos][ha[lcm]][tot] = res;
+    return res;
+}
