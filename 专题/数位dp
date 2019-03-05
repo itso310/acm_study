@@ -76,3 +76,35 @@ ll dfs(int pos, int tot, int lcm, bool limit) {
  	dp[pos][ha[lcm]][tot] = res;
     return res;
 }
+
+3、Beautiful numbers(https://ac.nowcoder.com/acm/contest/163/J)
+题意：
+    给你一个数,若数位上所有的和能整除这个数,那么这个数可以称为美丽数,求[1,n]之中有多少个美丽数,其中1<=n<=1e12
+思路:
+    因为1e12数位之中最大数位和只有9*12=108,因此我们可以通过我们可以依次循环数位和，然后使用dfs去暴力搜索情况。
+如果存在sigma(di)==mod,那么这个数可以成立。并设dp[12][120][120],设dp[i][j][k]表示在i位时候,数位和为j,被mod
+余k的数量。
+
+核心代码：
+ll dfs(int pos, int tot, int remain, bool limit) {
+   if (pos == -1) //只有当数位和与mod相等时,并且正好模掉,才会有数字满足要求
+	return (tot == mod && !remain);
+   if (!limit&&dp[pos][tot][remain] != -1)
+	return dp[pos][tot][remain];
+   ll res = 0;
+   int top = limit ? di[pos] : 9;
+   for (int i = 0; i <= top; i++) {
+ 	if (i + tot > mod)
+		break;
+	res += dfs(pos - 1, i + tot, (10 * remain + i) % mod, limit&&i == di[pos]);
+   }
+   if (!limit)
+	dp[pos][tot][remain] = res;
+   return res;
+}
+
+反思:
+    数位dp的变种中,有一类实际是靠暴力搜索去解决问题,时间复杂度难以估计,但可以通过记忆华搜索进行剪枝,减少不必要的
+访问,需要人勇敢去莽。
+
+    
