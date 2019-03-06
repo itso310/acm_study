@@ -107,4 +107,36 @@ ll dfs(int pos, int tot, int remain, bool limit) {
     数位dp的变种中,有一类实际是靠暴力搜索去解决问题,时间复杂度难以估计,但可以通过记忆华搜索进行剪枝,减少不必要的
 访问,需要人勇敢去莽。
 
-    
+4、B-number(hdu3652)
+题意:
+    给你一个n(1<=n<=1000000000),求[1,n]内所有数中含有13，且能被13整除的数。
+思路:
+    典型的数位dp,设dp[i][j][k],i表示第i位,j表示数%13的结果,k表示状态,其中0表示前面不含13,1表示前一位含1,2表示前面含有13,
+这样进行相应的dfs即可获得答案。
+
+核心代码:
+ll dfs(int pos, int tot,int state, bool limit) {
+   if (pos == -1)
+	return (state==2 && !tot);
+   if (!limit&&dp[pos][tot][state] != -1)
+	return dp[pos][tot][state];
+   int top = limit ? di[pos] : 9;
+   ll res = 0;
+   for (int i = 0; i <= top; i++) {
+ 	int cstate = state;
+	if (state == 1 && i == 3)
+		cstate = 2;
+	else if (state == 1 && i != 3&&i!=1)
+		cstate = 0;
+	else if (state == 0 && i == 1)
+		cstate = 1;
+	res += dfs(pos - 1, (tot * 10 + i) % 13, cstate, limit&&di[pos] == i);
+    }
+    if (!limit)
+	dp[pos][tot][state] = res;
+   return res;
+}
+
+反思:
+    最刚开始,我只是通过flag记录是否存在13,设dp[i][j],这种方法会使一类前面数位不存在13或存在13,但是因为之前有记录而导致return,
+使得出错.
