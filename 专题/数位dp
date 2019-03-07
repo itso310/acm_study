@@ -150,5 +150,31 @@ ll dfs(int pos, int tot,int state, bool limit) {
     存在一个函数F(x)=An*2^(n-1)+An-1*2^(n-2)+...+A1*1,其中x=(AnAn-1An-2...A1),现在求x=[0,B]中,求F(x)<=F(A)的个数
     
 思路：
-    显然是一道数位dp题,
+    显然是一道数位dp题,这题的t(1<=t<=10000),如若使用memset(dp),那么dp空间不应该开过10000,因为时间只有500ms,显然无法
+有有效的开数组方法解决问题.因此我们可以换一个思路,只需要初始化一次,之后的搜索只需要继续沿用之前的数组即可.根据题解,发现
+可以开dp[12][4600],dp[i][j]表示在第i个位置时,还剩下j个数字量可以继续装,类似于背包思想.至于若从0开始计数,显然说不通,且
+状态不正确。
+
+核心代码:
+ll dfs(int pos, int tot, bool limit) {
+    if (pos == -1)
+        return tot>=0;
+    if (!limit&&dp[pos][tot] != -1)
+        return dp[pos][tot];
+    int res = 0;
+    int top = limit ? di[pos] : 9;
+    for (int i = 0; i <= top; i++) {
+        int ntot = tot - i * (1 << pos);
+        if (ntot <0)
+            break;
+        res += dfs(pos - 1, ntot, limit&&di[pos] == i);
+    }
+    if (!limit)
+        dp[pos][tot] = res;
+    return res;
+}
+
+反思:
+    对于因为初始化时间复杂度过高的情况,可以考虑通过只初始化一次,将接下来沿用之前的状态保存.
+
 
