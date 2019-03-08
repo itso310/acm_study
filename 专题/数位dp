@@ -177,4 +177,33 @@ ll dfs(int pos, int tot, bool limit) {
 反思:
     对于因为初始化时间复杂度过高的情况,可以考虑通过只初始化一次,将接下来沿用之前的状态保存.
 
+6、Balanced Number(hdu 3709)
+题意:
+    一个数如果在数位中有一个位置满足诸如4139,取3为中轴,有2*4+1*1==9*1,则此数为平衡数.求[n,m]之中有多少个平衡数
+
+思路:
+    遍历每个位置为中轴,设dp[20][20][2000],其中dp[i][j][k]表示数位i,中轴为j,从左开始算起到右的总平衡值,如若
+tot==0,说明存在平衡.
+
+核心代码:
+ll dfs(int pos, int tot, int pivot, bool limit) {
+   if (pos == -1)
+	return tot==0;
+   if (!limit&&dp[pos][pivot][tot] != -1)
+	return dp[pos][pivot][tot];
+   ll res = 0;
+   int top = limit ? di[pos] : 9;
+   for (int i = 0; i <= top; i++) {
+	int tmp = tot + i * (pos - pivot);
+	if (tmp < 0)
+		break;
+	res += dfs(pos - 1, tmp, pivot, limit&&di[pos] == i);
+   }
+   if (!limit)
+	dp[pos][pivot][tot] = res;
+   return res;
+}
+
+反思:
+    只想着如何拆分两个,其实只需要两个合并在一起即可,要心中牢记若是拆开失败,就想着如何合并
 
