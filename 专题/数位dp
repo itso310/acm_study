@@ -206,4 +206,34 @@ ll dfs(int pos, int tot, int pivot, bool limit) {
 
 反思:
     只想着如何拆分两个,其实只需要两个合并在一起即可,要心中牢记若是拆开失败,就想着如何合并
+    
+7、Balanced Number(https://vjudge.net/contest/285467#problem/K)
+题意:
+    如果一个数它出现的位数中,奇数出现的个数为偶数，偶数出现的个数为奇数,例如6222,那么称为平衡数。求区间[n,m]中有多少个
+平衡树。
+
+思路:
+    因为总共有3种状态,即一个数出现0次,奇数次，偶数次.那我们可以使用三进制进行状态压缩,那么[0,9]的情况共有3**10,因此可以
+开一个dp[22][60000],dp[i][j]表示在第i个位置,j状态下有多少种可能。
+
+核心代码：
+ll dfs(int pos,int state,bool limit){
+    if(pos==-1)
+        return judge(state);
+    if(!limit&&dp[pos][state]!=-1)
+        return dp[pos][state];
+    ll res=0;
+    int top=limit?di[pos]:9;
+    for(int i=0;i<=top;i++){
+        res+=dfs(pos-1,(state==0&&i==0)?0:change(state,i),limit&&di[pos]==i);
+    }
+    if(!limit)
+        dp[pos][state]=res;
+    return res;
+}
+
+反思:
+    数位dp关键是状态的保存，之前一直想不到如何解决，就是因为之前走过的状态无法保存,最初有想到状态压缩保存进制,但是只考虑到了
+二进制，难以保存难以保存状态，因此可以考虑3进制，这样就可以方便地保存3种状态，进行判断，今后做题如果状态偏多，可以考虑多进制
+操作。
 
