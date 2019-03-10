@@ -103,3 +103,22 @@ inline void print(__int128 x) {
 }
 
 其他时候可以使用printf,cin,cout
+
+7、java大数
+import java.math.BigInteger;
+import java.util.Scanner;
+
+public class Main{	
+	public static void main(String[] args) {
+		Scanner cin=new Scanner(System.in);
+		BigInteger a,b,c;
+		int t;
+		t = cin.nextInt();
+		for(int i=1;i<=t;i++){
+			a=cin.nextBigInteger();
+			b=cin.nextBigInteger();
+			c=cin.nextBigInteger();
+			System.out.println(a.modPow(b, c));
+		}
+	}
+}
