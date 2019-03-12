@@ -247,3 +247,41 @@ b超出了8位十六进制，只需转化为solve(16^8)+solve(b)-solve(a-1)即�
     最初想到的是dp[i][j][k],j表示数位，k表示能量，方程意义是满足满足条件的个数,但是有bug至今也不清楚，但是明显这个可以
 简化，因为无论当前为是什么数，对最终结果没有任何影响，所以应该考虑清楚再写。如果一个思路不通，可以寻找是否再存其他意义的
 状态方程。
+
+8、吉哥系列故事——恨7不成妻(hdu4507)
+题意:
+    求一个区间[N,M]内所有的满足条件的数的平方和,其中满足的条件有:1、数位中不能存在7. 2、数位整数的每一位加起来的和不是7
+的整数倍. 3、这个整数不是7的整数倍.
+
+思路:
+    设node dp[i][j][k]表示i位时,位数和模为j,整数模为k,node中包含cnt表示个数,sum表示每个数的和,sqrsum表示平方和.本题的
+关键发现(x1+x2+...+xn)^2=x1^2+2*x1*(x2+...xn)+(x2+...+xn)^2=x1^2+2*x1*(x2+...xn)+x2^2+2*x2*(x3+...xn)+
+(x3+...xn)^2=.... 无限递归下去。
+
+核心代码：
+node dfs(int pos, int tot, int tot2, bool limit) {
+     node res; res.cnt = res.sqrsum = res.sum = 0;
+     if (pos == -1) {
+	res.cnt = (tot != 0 && tot2 != 0);
+	return res;
+     }
+     if (!limit&&dp[pos][tot][tot2].cnt != -1)
+	return dp[pos][tot][tot2];
+     int top = limit ? di[pos] : 9;
+     for (int i = 0; i <= top; i++) {
+	    if (i == 7)
+		continue;
+	node tmp = dfs(pos - 1, (tot + i) % 7, (tot2 * 10 + i) % 7, limit&&di[pos] == i);
+	ll A = p[pos] * i%mod;
+	res.cnt = (res.cnt + tmp.cnt) % mod;
+	res.sum = (res.sum + tmp.sum + A*tmp.cnt%mod) % mod;
+	res.sqrsum = (res.sqrsum + A * A%mod*tmp.cnt%mod + tmp.sqrsum + 2 * A%mod*tmp.sum%mod) % mod;
+     }
+     if (!limit)
+	dp[pos][tot][tot2] = res;
+     return res;
+}
+
+反思：
+    本题关键在于难以处理和,其实要是耐心推导公式可以发现规律,另外dp方程不一定只能有一个数值,可以定义一个结构体去
+保存更多状态.
