@@ -1,0 +1,75 @@
+1、指针版
+const int N = 1000005;
+char s[N]; 
+struct node {
+	 int count;
+	 node *fail;
+	 node *Next[26];
+	 node() {
+	 	 count = 0;
+		 fail = NULL;
+		 memset(Next, NULL, sizeof(Next));
+	 }
+};
+
+void Insert(char *s, node* root) {
+	   int i = 0; node *p = root;
+	   while (s[i]) {
+		    int ch = s[i] - 'a';
+		    if (p->Next[ch] == NULL)
+			  p->Next[ch] = new node();
+		    p = p->Next[ch];
+		    i++;
+	   }
+	 p->count++;
+}
+
+void build_ac_automation(node *root) {
+	  queue<node*>q;
+	  root->fail = NULL;
+	  q.push(root);
+	  while (!q.empty()) {
+		      node *tmp = q.front();
+		      q.pop();
+		      node *p = NULL;
+		      for (int i = 0; i < 26; i++) {
+			    if (tmp->Next[i] != NULL) {
+				      if (tmp == root)
+					        tmp->Next[i]->fail = root;
+				      else {
+					        p = tmp->fail;
+					    while (p != NULL) {
+						        if (p->Next[i] != NULL) {
+						      	    tmp->Next[i]->fail = p->Next[i];
+							          break;
+						        }
+						  p = p->fail;
+					}
+					if (p == NULL)
+						tmp->Next[i]->fail = root;
+				}
+				q.push(tmp->Next[i]);
+			}
+		}
+	}
+}
+
+int query(node *root) {
+	  int i = 0, cnt = 0;
+	  node* p = root;
+	  while (s[i]) {
+		      int ch = s[i] - 'a';
+		      while (p->Next[ch] == NULL && p != root)
+			          p = p->fail;
+		      p = p->Next[ch];
+		      p = (p == NULL) ? root : p;
+		      node *tmp = p;
+		      while (tmp != root && tmp->count != -1) {
+			          cnt += tmp->count;
+			          tmp->count = -1;
+			          tmp = tmp->fail;
+		      }
+		      i++;
+	   }
+	return cnt++;
+}
