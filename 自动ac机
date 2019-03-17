@@ -73,3 +73,80 @@ int query(node *root) {
 	   }
 	return cnt++;
 }
+
+
+静态ac机：
+class tree {
+public:
+	int nx[510010][26], fail[510010];
+	int end[510010];
+	int root, tot;
+
+	int newNode() {
+		for (int i = 0; i < 26; i++)
+			nx[tot][i] = -1;
+		end[tot] = 0;
+		return tot++;
+	}
+
+	void init() {
+		tot = 0;
+		root = newNode();
+	}
+
+	void insert(char s[]) {
+		int len = strlen(s);
+		int now = root;
+		for (int i = 0; i < len; i++) {
+			int id = s[i] - 'a';
+			if (nx[now][id] == -1)
+				nx[now][id] = newNode();
+			now = nx[now][id];
+		}
+		end[now]++;
+	}
+
+	void build() {
+		queue<int>q;
+		fail[root] = root;
+		for (int i = 0; i < 26; i++) {
+			if (nx[root][i] == -1) {
+				nx[root][i] = root;
+			}
+			else {
+				fail[nx[root][i]] = root;
+				q.push(nx[root][i]);
+			}
+		}
+		while (!q.empty()) {
+			int now = q.front();
+			q.pop();
+			for (int i = 0; i < 26; i++) {
+				if (nx[now][i] == -1) {
+					nx[now][i] = nx[fail[now]][i];
+				}
+				else {
+					fail[nx[now][i]] = nx[fail[now]][i];
+					q.push(nx[now][i]);
+				}
+			}
+		}
+	}
+
+	int query(char s[]) {
+		int res = 0;
+		int len = strlen(s);
+		int now = root;
+		for (int i = 0; i < len; i++) {
+			now = nx[now][s[i] - 'a'];
+			int tmp = now;
+			while (tmp != root&&end[tmp]!=0) {
+				res += end[tmp];
+				end[tmp] = 0;
+				tmp = fail[tmp];
+			}
+		}
+		return res;
+	}
+
+}ac;
